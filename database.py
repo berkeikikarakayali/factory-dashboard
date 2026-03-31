@@ -19,6 +19,7 @@ def init_db():
             machine_id TEXT NOT NULL,
             temperature REAL NOT NULL,
             vibration REAL NOT NULL,
+            status TEXT NOT NULL,
             timestamp TEXT NOT NULL
         )
     """)
@@ -27,14 +28,14 @@ def init_db():
     conn.close()
 
 
-def insert_sensor_data(machine_id, temperature, vibration, timestamp):
+def insert_sensor_data(machine_id, temperature, vibration, status, timestamp):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        INSERT INTO sensor_data (machine_id, temperature, vibration, timestamp)
-        VALUES (?, ?, ?, ?)
-    """, (machine_id, temperature, vibration, timestamp))
+        INSERT INTO sensor_data (machine_id, temperature, vibration, status, timestamp)
+        VALUES (?, ?, ?, ?, ?)
+    """, (machine_id, temperature, vibration, status, timestamp))
 
     conn.commit()
     conn.close()

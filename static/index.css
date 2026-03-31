@@ -60,3 +60,27 @@ th, td {
 tbody tr:hover {
     background-color: #273449;
 }
+
+.status-normal,
+.status-warning,
+.status-critical {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status-normal {
+    background-color: #14532d;
+    color: #bbf7d0;
+}
+
+.status-warning {
+    background-color: #78350f;
+    color: #fde68a;
+}
+
+.status-critical {
+    background-color: #7f1d1d;
+    color: #fecaca;
+}

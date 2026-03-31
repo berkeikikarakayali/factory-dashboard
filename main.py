@@ -20,6 +20,15 @@ class SensorReading(BaseModel):
     vibration: float
 
 
+def calculate_status(temperature, vibration):
+    if temperature >= 85 or vibration >= 9:
+        return "CRITICAL"
+    elif temperature >= 70 or vibration >= 7:
+        return "WARNING"
+    else:
+        return "NORMAL"
+
+
 @app.get("/")
 def root():
     return FileResponse("static/index.html")
@@ -28,15 +37,20 @@ def root():
 @app.post("/api/sensor")
 def receive_sensor_data(reading: SensorReading):
     timestamp = datetime.now().isoformat()
+    status = calculate_status(reading.temperature, reading.vibration)
 
     insert_sensor_data(
         machine_id=reading.machine_id,
         temperature=reading.temperature,
         vibration=reading.vibration,
+        status=status,
         timestamp=timestamp
     )
 
-    return {"message": "Data saved successfully"}
+    return {
+        "message": "Data saved successfully",
+        "status": status
+    }
 
 
 @app.get("/api/data")
