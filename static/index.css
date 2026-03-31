@@ -185,3 +185,67 @@ tr:hover {
     border-radius: 5px;
     font-size: 13px;
 }
+
+/*chart*/
+.chart-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.chart-box {
+    background-color: #1e293b;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.chart-box h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #cbd5e1;
+}
+
+.simple-chart {
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px;
+    background-color: #0f172a;
+    border-radius: 6px;
+}
+
+.bar {
+    flex: 1;
+    background-color: #38bdf8;
+    text-align: center;
+    color: white;
+    font-size: 11px;
+    border-radius: 4px 4px 0 0;
+    min-height: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 4px;
+}
+
+.chart-info {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 10px;
+}
+
+.bar-normal {
+    background-color: #22c55e;
+}
+
+.bar-warning {
+    background-color: #f59e0b;
+    color: black;
+}
+
+.bar-critical {
+    background-color: #ef4444;
+}

@@ -139,6 +139,7 @@ async function loadMachineDetails(machineId) {
         }
 
         tableBody.innerHTML = html;
+        drawCharts(data);
     } catch (error) {
         tableBody.innerHTML = `
             <tr>
@@ -199,4 +200,63 @@ async function fetchAlerts() {
 function setAlertFilter(filterValue) {
     currentAlertFilter = filterValue;
     fetchAlerts();
+}
+
+
+function drawCharts(machineData) {
+    let temperatureChart = document.getElementById("temperatureChart");
+    let vibrationChart = document.getElementById("vibrationChart");
+
+    temperatureChart.innerHTML = "";
+    vibrationChart.innerHTML = "";
+
+    if (machineData.length === 0) {
+        temperatureChart.innerHTML = "<p>No temperature data</p>";
+        vibrationChart.innerHTML = "<p>No vibration data</p>";
+        return;
+    }
+
+    let maxTemperature = 100;
+    let maxVibration = 10;
+
+    for (let i = machineData.length - 1; i >= 0; i--) {
+        let item = machineData[i];
+
+        let tempHeight = (item.temperature / maxTemperature) * 180;
+        let vibrationHeight = (item.vibration / maxVibration) * 180;
+
+        let tempBar = document.createElement("div");
+        tempBar.className = getTemperatureBarClass(item.temperature);
+        tempBar.style.height = tempHeight + "px";
+        tempBar.textContent = item.temperature;
+
+        let vibrationBar = document.createElement("div");
+        vibrationBar.className = getVibrationBarClass(item.vibration);
+        vibrationBar.style.height = vibrationHeight + "px";
+        vibrationBar.textContent = item.vibration;
+
+        temperatureChart.appendChild(tempBar);
+        vibrationChart.appendChild(vibrationBar);
+    }
+}
+
+
+function getTemperatureBarClass(value) {
+    if (value >= 85) {
+        return "bar bar-critical";
+    } else if (value >= 70) {
+        return "bar bar-warning";
+    } else {
+        return "bar bar-normal";
+    }
+}
+
+function getVibrationBarClass(value) {
+    if (value >= 9) {
+        return "bar bar-critical";
+    } else if (value >= 7) {
+        return "bar bar-warning";
+    } else {
+        return "bar bar-normal";
+    }
 }
