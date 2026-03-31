@@ -9,7 +9,8 @@ from database import (
     init_db,
     insert_sensor_data,
     get_latest_sensor_data,
-    get_status_summary
+    get_status_summary,
+    get_latest_data_per_machine
 )
 
 app = FastAPI()
@@ -66,3 +67,8 @@ def get_data():
 @app.get("/api/summary")
 def get_summary():
     return get_status_summary()
+
+
+@app.get("/api/machines/latest")
+def get_latest_machine_data():
+    return get_latest_data_per_machine()

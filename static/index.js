@@ -4,6 +4,12 @@ function getStatusClass(status) {
     return "status-normal";
 }
 
+function getMachineCardClass(status) {
+    if (status === "CRITICAL") return "machine-card critical";
+    if (status === "WARNING") return "machine-card warning";
+    return "machine-card normal";
+}
+
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleString();
@@ -31,11 +37,7 @@ async function fetchSensorData() {
                 <td>${item.machine_id}</td>
                 <td>${item.temperature} °C</td>
                 <td>${item.vibration}</td>
-                <td>
-                    <span class="${getStatusClass(item.status)}">
-                        ${item.status}
-                    </span>
-                </td>
+                <td><span class="${getStatusClass(item.status)}">${item.status}</span></td>
                 <td>${formatTimestamp(item.timestamp)}</td>
             </tr>
         `).join("");
@@ -63,9 +65,37 @@ async function fetchSummary() {
     }
 }
 
+async function fetchMachineCards() {
+    const machineCardsContainer = document.getElementById("machineCards");
+
+    try {
+        const response = await fetch("/api/machines/latest");
+        const machines = await response.json();
+
+        if (machines.length === 0) {
+            machineCardsContainer.innerHTML = "<p>No machine data available yet.</p>";
+            return;
+        }
+
+        machineCardsContainer.innerHTML = machines.map(machine => `
+            <div class="${getMachineCardClass(machine.status)}">
+                <h3>${machine.machine_id}</h3>
+                <p><strong>Temperature:</strong> ${machine.temperature} °C</p>
+                <p><strong>Vibration:</strong> ${machine.vibration}</p>
+                <p><strong>Status:</strong> <span class="${getStatusClass(machine.status)}">${machine.status}</span></p>
+                <p><strong>Last Update:</strong> ${formatTimestamp(machine.timestamp)}</p>
+            </div>
+        `).join("");
+    } catch (error) {
+        machineCardsContainer.innerHTML = "<p>Failed to load machine cards.</p>";
+        console.error("Error fetching machine cards:", error);
+    }
+}
+
 async function refreshDashboard() {
-    await fetchSensorData();
     await fetchSummary();
+    await fetchMachineCards();
+    await fetchSensorData();
 }
 
 refreshDashboard();

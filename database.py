@@ -81,3 +81,24 @@ def get_status_summary():
         "warning": warning,
         "critical": critical
     }
+
+def get_latest_data_per_machine():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT s1.*
+        FROM sensor_data s1
+        INNER JOIN (
+            SELECT machine_id, MAX(id) as max_id
+            FROM sensor_data
+            GROUP BY machine_id
+        ) s2
+        ON s1.id = s2.max_id
+        ORDER BY s1.machine_id
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [dict(row) for row in rows]
