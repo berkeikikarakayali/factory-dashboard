@@ -11,7 +11,24 @@
         <h1>Smart Factory Dashboard</h1>
         <p class="subtitle">Live Sensor Data </p>
 
-        <button id="refreshButton">Refresh Data</button>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Total Records</h3>
+                <p id="totalCount">0</p>
+            </div>
+            <div class="summary-card normal-card">
+                <h3>Normal</h3>
+                <p id="normalCount">0</p>
+            </div>
+            <div class="summary-card warning-card">
+                <h3>Warning</h3>
+                <p id="warningCount">0</p>
+            </div>
+            <div class="summary-card critical-card">
+                <h3>Critical</h3>
+                <p id="criticalCount">0</p>
+            </div>
+        </div>
 
         <div class="table-container">
             <table>

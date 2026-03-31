@@ -41,16 +41,43 @@ def insert_sensor_data(machine_id, temperature, vibration, status, timestamp):
     conn.close()
 
 
-def get_all_sensor_data():
+def get_latest_sensor_data(limit=20):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
         SELECT * FROM sensor_data
         ORDER BY id DESC
-    """)
+        LIMIT ?
+    """, (limit,))
 
     rows = cursor.fetchall()
     conn.close()
 
     return [dict(row) for row in rows]
+
+
+def get_status_summary():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) as total FROM sensor_data")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT COUNT(*) as count FROM sensor_data WHERE status = 'NORMAL'")
+    normal = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) as count FROM sensor_data WHERE status = 'WARNING'")
+    warning = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) as count FROM sensor_data WHERE status = 'CRITICAL'")
+    critical = cursor.fetchone()["count"]
+
+    conn.close()
+
+    return {
+        "total": total,
+        "normal": normal,
+        "warning": warning,
+        "critical": critical
+    }

@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 40px auto;
     padding: 20px;
 }
@@ -21,19 +21,42 @@ h1 {
     margin-bottom: 20px;
 }
 
-button {
-    background-color: #38bdf8;
-    color: #0f172a;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 20px;
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    background-color: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.summary-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #cbd5e1;
+}
+
+.summary-card p {
+    margin: 0;
+    font-size: 28px;
     font-weight: bold;
 }
 
-button:hover {
-    background-color: #0ea5e9;
+.normal-card {
+    background-color: #14532d;
+}
+
+.warning-card {
+    background-color: #78350f;
+}
+
+.critical-card {
+    background-color: #7f1d1d;
 }
 
 .table-container {

@@ -5,7 +5,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-from database import init_db, insert_sensor_data, get_all_sensor_data
+from database import (
+    init_db,
+    insert_sensor_data,
+    get_latest_sensor_data,
+    get_status_summary
+)
 
 app = FastAPI()
 
@@ -55,4 +60,9 @@ def receive_sensor_data(reading: SensorReading):
 
 @app.get("/api/data")
 def get_data():
-    return get_all_sensor_data()
+    return get_latest_sensor_data()
+
+
+@app.get("/api/summary")
+def get_summary():
+    return get_status_summary()

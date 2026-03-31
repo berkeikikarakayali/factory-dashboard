@@ -4,6 +4,11 @@ function getStatusClass(status) {
     return "status-normal";
 }
 
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+}
+
 async function fetchSensorData() {
     const tableBody = document.getElementById("sensorTableBody");
 
@@ -31,7 +36,7 @@ async function fetchSensorData() {
                         ${item.status}
                     </span>
                 </td>
-                <td>${item.timestamp}</td>
+                <td>${formatTimestamp(item.timestamp)}</td>
             </tr>
         `).join("");
     } catch (error) {
@@ -44,6 +49,24 @@ async function fetchSensorData() {
     }
 }
 
-document.getElementById("refreshButton").addEventListener("click", fetchSensorData);
+async function fetchSummary() {
+    try {
+        const response = await fetch("/api/summary");
+        const summary = await response.json();
 
-fetchSensorData();
+        document.getElementById("totalCount").textContent = summary.total;
+        document.getElementById("normalCount").textContent = summary.normal;
+        document.getElementById("warningCount").textContent = summary.warning;
+        document.getElementById("criticalCount").textContent = summary.critical;
+    } catch (error) {
+        console.error("Error fetching summary:", error);
+    }
+}
+
+async function refreshDashboard() {
+    await fetchSensorData();
+    await fetchSummary();
+}
+
+refreshDashboard();
+setInterval(refreshDashboard, 3000);
