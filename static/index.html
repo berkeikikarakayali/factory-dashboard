@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Smart Factory Dashboard</h1>
-        <p class="subtitle">Live Sensor Data </p>
+        <p class="subtitle">Live Sensor Data</p>
 
         <div class="summary-grid">
             <div class="summary-card">
@@ -35,6 +35,56 @@
             <p>Loading machine cards...</p>
         </div>
 
+        <h2>Selected Machine Details</h2>
+        <div class="detail-box">
+            <p id="selectedMachineText">Click a machine card to see details.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Temperature</th>
+                            <th>Vibration</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="machineDetailBody">
+                        <tr>
+                            <td colspan="5">No machine selected.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2>Recent Alerts</h2>
+        <div class="filter-buttons">
+            <button onclick="setAlertFilter('ALL')">All</button>
+            <button onclick="setAlertFilter('WARNING')">Warning</button>
+            <button onclick="setAlertFilter('CRITICAL')">Critical</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Machine ID</th>
+                        <th>Temperature</th>
+                        <th>Vibration</th>
+                        <th>Status</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="alertTableBody">
+                    <tr>
+                        <td colspan="6">Loading alerts...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <h2>Recent Records</h2>
         <div class="table-container">
             <table>
@@ -50,7 +100,7 @@
                 </thead>
                 <tbody id="sensorTableBody">
                     <tr>
-                        <td colspan="5">Loading data...</td>
+                        <td colspan="6">Loading data...</td>
                     </tr>
                 </tbody>
             </table>

@@ -10,7 +10,9 @@ from database import (
     insert_sensor_data,
     get_latest_sensor_data,
     get_status_summary,
-    get_latest_data_per_machine
+    get_latest_data_per_machine,
+    get_alert_data,
+    get_machine_data
 )
 
 app = FastAPI()
@@ -72,3 +74,13 @@ def get_summary():
 @app.get("/api/machines/latest")
 def get_latest_machine_data():
     return get_latest_data_per_machine()
+
+
+@app.get("/api/alerts")
+def get_alerts():
+    return get_alert_data()
+
+
+@app.get("/api/machine/{machine_id}")
+def get_machine_details(machine_id: str):
+    return get_machine_data(machine_id)

@@ -80,6 +80,7 @@ h2 {
     padding: 15px;
     border-radius: 8px;
     border: 2px solid #475569;
+    cursor: pointer;
 }
 
 .machine-card h3 {
@@ -107,6 +108,28 @@ h2 {
 }
 
 /* table */
+.detail-box {
+    margin-bottom: 25px;
+}
+
+.filter-buttons {
+    margin-bottom: 10px;
+}
+
+.filter-buttons button {
+    margin-right: 8px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #334155;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.filter-buttons button:hover {
+    background-color: #475569;
+}
+
 .table-container {
     background-color: #1e293b;
     border-radius: 8px;

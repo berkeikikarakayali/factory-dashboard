@@ -102,3 +102,37 @@ def get_latest_data_per_machine():
     conn.close()
 
     return [dict(row) for row in rows]
+
+
+def get_alert_data():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM sensor_data
+        WHERE status = 'WARNING' OR status = 'CRITICAL'
+        ORDER BY id DESC
+        LIMIT 20
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [dict(row) for row in rows]
+
+
+def get_machine_data(machine_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM sensor_data
+        WHERE machine_id = ?
+        ORDER BY id DESC
+        LIMIT 10
+    """, (machine_id,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [dict(row) for row in rows]

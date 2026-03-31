@@ -1,3 +1,5 @@
+let currentAlertFilter = "ALL";
+
 function getStatusClass(status) {
     if (status === "CRITICAL") return "status-critical";
     if (status === "WARNING") return "status-warning";
@@ -78,7 +80,7 @@ async function fetchMachineCards() {
         }
 
         machineCardsContainer.innerHTML = machines.map(machine => `
-            <div class="${getMachineCardClass(machine.status)}">
+            <div class="${getMachineCardClass(machine.status)}" onclick="loadMachineDetails('${machine.machine_id}')">
                 <h3>${machine.machine_id}</h3>
                 <p><strong>Temperature:</strong> ${machine.temperature} °C</p>
                 <p><strong>Vibration:</strong> ${machine.vibration}</p>
@@ -96,7 +98,105 @@ async function refreshDashboard() {
     await fetchSummary();
     await fetchMachineCards();
     await fetchSensorData();
+    await fetchAlerts();
 }
 
 refreshDashboard();
 setInterval(refreshDashboard, 3000);
+
+
+async function loadMachineDetails(machineId) {
+    let detailText = document.getElementById("selectedMachineText");
+    let tableBody = document.getElementById("machineDetailBody");
+
+    detailText.textContent = "Selected machine: " + machineId;
+
+    try {
+        let response = await fetch("/api/machine/" + machineId);
+        let data = await response.json();
+
+        if (data.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5">No data found for this machine.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        let html = "";
+
+        for (let item of data) {
+            html += `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.temperature} °C</td>
+                    <td>${item.vibration}</td>
+                    <td><span class="${getStatusClass(item.status)}">${item.status}</span></td>
+                    <td>${formatTimestamp(item.timestamp)}</td>
+                </tr>
+            `;
+        }
+
+        tableBody.innerHTML = html;
+    } catch (error) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="5">Could not load machine details.</td>
+            </tr>
+        `;
+        console.log("Machine detail error:", error);
+    }
+}
+
+async function fetchAlerts() {
+    let tableBody = document.getElementById("alertTableBody");
+
+    try {
+        let response = await fetch("/api/alerts");
+        let data = await response.json();
+
+        if (currentAlertFilter !== "ALL") {
+            data = data.filter(item => item.status === currentAlertFilter);
+        }
+
+        if (data.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6">No alerts found.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        let html = "";
+
+        for (let item of data) {
+            html += `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.machine_id}</td>
+                    <td>${item.temperature} °C</td>
+                    <td>${item.vibration}</td>
+                    <td><span class="${getStatusClass(item.status)}">${item.status}</span></td>
+                    <td>${formatTimestamp(item.timestamp)}</td>
+                </tr>
+            `;
+        }
+
+        tableBody.innerHTML = html;
+    } catch (error) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6">Could not load alerts.</td>
+            </tr>
+        `;
+        console.log("Alert error:", error);
+    }
+}
+
+
+function setAlertFilter(filterValue) {
+    currentAlertFilter = filterValue;
+    fetchAlerts();
+}
