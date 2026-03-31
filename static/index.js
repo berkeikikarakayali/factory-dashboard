@@ -140,6 +140,7 @@ async function loadMachineDetails(machineId) {
 
         tableBody.innerHTML = html;
         drawCharts(data);
+        updateMachineStats(data);
     } catch (error) {
         tableBody.innerHTML = `
             <tr>
@@ -259,4 +260,47 @@ function getVibrationBarClass(value) {
     } else {
         return "bar bar-normal";
     }
+}
+
+function updateMachineStats(machineData) {
+    if (machineData.length === 0) {
+        document.getElementById("avgTemp").textContent = "-";
+        document.getElementById("maxTemp").textContent = "-";
+        document.getElementById("avgVibration").textContent = "-";
+        document.getElementById("warningCountMachine").textContent = "-";
+        document.getElementById("criticalCountMachine").textContent = "-";
+        return;
+    }
+
+    let totalTemp = 0;
+    let maxTemp = machineData[0].temperature;
+    let totalVibration = 0;
+    let warningCount = 0;
+    let criticalCount = 0;
+
+    for (let item of machineData) {
+        totalTemp += item.temperature;
+        totalVibration += item.vibration;
+
+        if (item.temperature > maxTemp) {
+            maxTemp = item.temperature;
+        }
+
+        if (item.status === "WARNING") {
+            warningCount++;
+        }
+
+        if (item.status === "CRITICAL") {
+            criticalCount++;
+        }
+    }
+
+    let avgTemp = totalTemp / machineData.length;
+    let avgVibration = totalVibration / machineData.length;
+
+    document.getElementById("avgTemp").textContent = avgTemp.toFixed(1) + " °C";
+    document.getElementById("maxTemp").textContent = maxTemp.toFixed(1) + " °C";
+    document.getElementById("avgVibration").textContent = avgVibration.toFixed(2);
+    document.getElementById("warningCountMachine").textContent = warningCount;
+    document.getElementById("criticalCountMachine").textContent = criticalCount;
 }

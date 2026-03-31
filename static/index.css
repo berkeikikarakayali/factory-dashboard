@@ -249,3 +249,32 @@ tr:hover {
 .bar-critical {
     background-color: #ef4444;
 }
+
+
+
+/*stats*/
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: #1e293b;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-card h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.stat-card p {
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
