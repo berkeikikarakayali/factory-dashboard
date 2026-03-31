@@ -36,3 +36,34 @@ It simulates sensor data coming from factory machines, stores the data in a SQLi
 - **HTML**
 - **CSS**
 - **JavaScript**
+
+## How It Works
+
+- `sensor_simulator.py` generates sample machine data
+- The backend receives and stores the data
+- The frontend fetches data from the API
+- The dashboard shows machine status and recent activity
+
+## Screenshots
+
+### Dashboard Overview
+![Dashboard Overview](screenshots/dashboard-overview.png)
+
+### Selected Machine Details
+![Machine Details](screenshots/machine-specific-view1.png)
+![Machine Details](screenshots/machine-specific-view2.png)
+
+### Alerts View
+![Alerts View](screenshots/record-tables.png)
+
+
+## API Endpoints
+
+- `GET /` → dashboard page
+- `POST /api/sensor` → receive sensor data
+- `GET /api/data` → recent records
+- `GET /api/summary` → summary information
+- `GET /api/machines/latest` → latest data for each machine
+- `GET /api/alerts` → warning and critical alerts
+- `GET /api/machine/{machine_id}` → selected machine records
+
