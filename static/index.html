@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Factory Dashboard</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Factory Dashboard</h1>
+        <p class="subtitle">Live Sensor Data </p>
+
+        <button id="refreshButton">Refresh Data</button>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Machine ID</th>
+                        <th>Temperature</th>
+                        <th>Vibration</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="sensorTableBody">
+                    <tr>
+                        <td colspan="5">Loading data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/index.js"></script>
+</body>
+</html>

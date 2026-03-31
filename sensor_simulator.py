@@ -15,13 +15,16 @@ def generate_sensor_data(machine_id):
         "vibration": round(random.uniform(1, 10), 2)
     }
 
+def send_sensor_data(data):
+    response = requests.post(API_URL, json=data, timeout=5)
+    return response
 
 while True:
     for machine_id in MACHINES:
         data = generate_sensor_data(machine_id)
 
         try:
-            response = requests.post(API_URL, json=data, timeout=5)
+            response = send_sensor_data(data)
             print(f"Sent: {data} -> Status: {response.status_code}")
         except Exception as e:
             print(f"Error sending data for {machine_id}: {e}")
